@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Juego Aleatorio</title>
+
+<style>
+body{
+font-family:Arial;
+text-align:center;
+padding:30px;
+}
+
+button{
+padding:15px 30px;
+font-size:20px;
+cursor:pointer;
+}
+
+#resultado{
+width:250px;
+height:120px;
+margin:20px auto;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+font-weight:bold;
+color:white;
+background:gray;
+border-radius:10px;
+}
+
+table{
+margin:auto;
+border-collapse:collapse;
+}
+
+th,td{
+border:1px solid black;
+padding:8px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Juego Aleatorio</h1>
+
+<button onclick="jugar()">PULSAR</button>
+
+<div id="resultado">Esperando...</div>
+
+<p>Total de pulsaciones: <span id="contador">0</span></p>
+<p>Victorias: <span id="victorias">0</span></p>
+<p>Derrotas: <span id="derrotas">0</span></p>
+
+<table>
+<tr>
+<th>Nº</th>
+<th>Hora</th>
+<th>Segundos desde la anterior</th>
+<th>Resultado</th>
+</tr>
+<tbody id="historial"></tbody>
+</table>
+
+<script>
+
+let total=0;
+let victorias=0;
+let derrotas=0;
+let ultimoClick=null;
+
+function jugar(){
+
+let gana=Math.random()<0.5;
+
+if(gana){
+victorias++;
+document.getElementById("resultado").style.background="green";
+document.getElementById("resultado").innerHTML="GANA";
+}else{
+derrotas++;
+document.getElementById("resultado").style.background="red";
+document.getElementById("resultado").innerHTML="PIERDE";
+}
+
+total++;
+
+document.getElementById("contador").innerHTML=total;
+document.getElementById("victorias").innerHTML=victorias;
+document.getElementById("derrotas").innerHTML=derrotas;
+
+let ahora=new Date();
+let diferencia="-";
+
+if(ultimoClick){
+diferencia=((ahora-ultimoClick)/1000).toFixed(2);
+}
+
+ultimoClick=ahora;
+
+let fila=document.createElement("tr");
+
+fila.innerHTML=`
+<td>${total}</td>
+<td>${ahora.toLocaleTimeString()}</td>
+<td>${diferencia}</td>
+<td>${gana ? "Victoria" : "Derrota"}</td>
+`;
+
+document.getElementById("historial").prepend(fila);
+}
+
+</script>
+
+</body>
+</html>
